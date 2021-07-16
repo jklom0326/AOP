@@ -154,8 +154,6 @@ class MainActivity : AppCompatActivity() {
             db.historyDao().insertHistory(History(null, expressionText, resultText))
         }).start()
 
-
-
         resultTextView.text = ""
         expressionTextView.text = resultText
 
