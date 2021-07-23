@@ -7,12 +7,17 @@ import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Button
 
 
 class MainActivity : AppCompatActivity() {
 
     private val recordButton: RecordButton by lazy {
         findViewById(R.id.recordButton)
+    }
+
+    private val resetButton: Button by lazy {
+        findViewById(R.id.resetButton)
     }
 
     private val requiredPermissions =
@@ -28,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private var state = State.BEFORE_RECORDING
         set(value) {
             field = value
+            resetButton.isEnabled = value == State.AFTER_RECORDING || value == State.ON_PLAYING
             recordButton.updateIconWithState(value)
         }
 
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         requestAudioPermission()
         initViews()
         bindViews()
+        initVariables()
     }
 
     override fun onRequestPermissionsResult(
@@ -48,9 +55,10 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         val audioRecordPermissionGranted =
-            requestCode == REQUEST_RECORD_AUDIO_PERMISSOIN && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
+            requestCode == REQUEST_RECORD_AUDIO_PERMISSOIN &&
+                    grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
 
-        if (audioRecordPermissionGranted) {
+        if (!audioRecordPermissionGranted) {
             finish()
         }
     }
@@ -61,6 +69,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         recordButton.updateIconWithState(state)
+    }
+
+    private fun bindViews() {
+        resetButton.setOnClickListener {
+            stopPlaying()
+            state = State.BEFORE_RECORDING
+        }
+
+        recordButton.setOnClickListener {
+            when (state) {
+
+                State.BEFORE_RECORDING -> {
+                    startRecording()
+                }
+                State.ON_RECORDING -> {
+                    stopRecording()
+                }
+                State.AFTER_RECORDING -> {
+                    startPlaying()
+                }
+                State.ON_PLAYING -> {
+                    stopPlaying()
+                }
+            }
+        }
+    }
+
+    private fun initVariables() {
+        state =State.BEFORE_RECORDING
     }
 
     private fun startRecording() {
@@ -102,25 +139,6 @@ class MainActivity : AppCompatActivity() {
         state = State.AFTER_RECORDING
     }
 
-    private fun bindViews() {
-        recordButton.setOnClickListener {
-            when (state) {
-
-                State.BEFORE_RECORDING -> {
-                    startRecording()
-                }
-                State.ON_RECORDING -> {
-                    stopRecording()
-                }
-                State.AFTER_RECORDING -> {
-                    startPlaying()
-                }
-                State.ON_PLAYING -> {
-                    stopPlaying()
-                }
-            }
-        }
-    }
 
     companion object {
         private const val REQUEST_RECORD_AUDIO_PERMISSOIN = 201
