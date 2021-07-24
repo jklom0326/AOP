@@ -85,6 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         resetButton.setOnClickListener {
             stopPlaying()
+            soundVisualizerView.clearVisualization()
+            recordTimeTextView.clearCountTime()
             state = State.BEFORE_RECORDING
         }
 
@@ -142,6 +144,10 @@ class MainActivity : AppCompatActivity() {
         player = MediaPlayer().apply {
             setDataSource(recordingFilePath)
             prepare()
+        }
+        player?.setOnCompletionListener {
+            stopPlaying()
+            state = State.AFTER_RECORDING
         }
         player?.start()
         soundVisualizerView.startVisualizing(true)

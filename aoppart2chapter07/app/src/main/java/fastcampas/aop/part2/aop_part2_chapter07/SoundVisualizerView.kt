@@ -87,7 +87,13 @@ class SoundVisualizerView(
         handler?.post(visualizeRepeatAction)
     }
 
+    fun clearVisualization(){
+        drawingAmplitudes = emptyList()
+        invalidate()
+    }
+
     fun stopVisualizing() {
+        replayingPositon = 0
         handler?.removeCallbacks(visualizeRepeatAction)
     }
 
