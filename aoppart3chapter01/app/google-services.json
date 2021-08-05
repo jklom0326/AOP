@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "13383974047",
+    "project_id": "aop-part3-chapter01-1384c",
+    "storage_bucket": "aop-part3-chapter01-1384c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13383974047:android:b389f8ae6b416d82fe76aa",
+        "android_client_info": {
+          "package_name": "fastcampas.aop.part2.aop_part3_chapter01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13383974047-frgqjnoob6v7uv6luur8c29hmenmbkgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCzu1wuLKhS9s27J96ENWAdeDNauiLEfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13383974047-frgqjnoob6v7uv6luur8c29hmenmbkgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
