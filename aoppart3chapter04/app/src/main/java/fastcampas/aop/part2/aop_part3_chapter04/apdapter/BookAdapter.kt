@@ -41,6 +41,7 @@ class BookAdapter : ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) 
     }
 
     companion object {
+        // object 무명클래스
         val diffUtil = object : DiffUtil.ItemCallback<Book>() {
             override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
                 return oldItem == newItem
