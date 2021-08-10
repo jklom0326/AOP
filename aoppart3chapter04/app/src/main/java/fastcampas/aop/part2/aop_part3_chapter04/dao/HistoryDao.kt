@@ -9,11 +9,12 @@ import fastcampas.aop.part2.aop_part3_chapter04.model.History
 interface HistoryDao {
 
     @Query("SELECT * FROM history")
-    fun getAll():List<History>
+    fun getAll(): List<History>
 
     @Insert
     fun insertHistory(history: History)
 
-    @Query("DELETE FROM history WHERE keyword == :keyword")
+    @Query("DELETE FROM history WHERE keyword = :keyword")
     fun delete(keyword: String)
+
 }

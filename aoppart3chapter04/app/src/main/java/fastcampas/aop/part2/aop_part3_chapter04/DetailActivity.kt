@@ -35,10 +35,10 @@ class DetailActivity : AppCompatActivity() {
 
         binding.descripstionTextView.text = bookModel?.description.orEmpty()
 
-        Thread {
+        Thread{
             val review = db.reviewDao().getOne(bookModel?.id?.toInt() ?: 0)
-            runOnUiThread {
-                binding.reviewEditText.setText(review?.review?.orEmpty())
+            runOnUiThread{
+                binding.reviewEditText.setText(review?.review.orEmpty())
             }
         }.start()
 
@@ -53,7 +53,6 @@ class DetailActivity : AppCompatActivity() {
 
             }.start()
         }
-
     }
 
 }
