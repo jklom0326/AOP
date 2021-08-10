@@ -10,13 +10,17 @@ import fastcampas.aop.part2.aop_part3_chapter04.databinding.ItemBookBinding
 import fastcampas.aop.part2.aop_part3_chapter04.model.Book
 
 
-class BookAdapter : ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
+class BookAdapter(private val itemClickedListener: (Book) -> Unit) : ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
 
     inner class BookItemViewHolder(private val binding: ItemBookBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(bookModel: Book) {
             binding.titleTextView.text = bookModel.title
             binding.descripstionTextView.text = bookModel.description
+
+            binding.root.setOnClickListener {
+                itemClickedListener(bookModel)
+            }
 
             //context좀 찾아봐야할듯
             Glide
