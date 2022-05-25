@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="interparkAPIKey">5D74D7196E627358F81B6580E4C94D6DB6383C562691F846B37956861DF8117D</string>
+    <string name="naverClient_ID">cbqQHp9Ek74aP36wUp65</string>
+    <string name="naverClient_Secret">dtQGSe7myM</string>
 </resources>

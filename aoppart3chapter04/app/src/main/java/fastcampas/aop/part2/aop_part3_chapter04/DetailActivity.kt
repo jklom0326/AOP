@@ -36,9 +36,9 @@ class DetailActivity : AppCompatActivity() {
         binding.descripstionTextView.text = bookModel?.description.orEmpty()
 
         Thread{
-            val review = db.reviewDao().getOne(bookModel?.id?.toInt() ?: 0)
+            val review = db.reviewDao().getOne(bookModel?.id.toString())
             runOnUiThread{
-                binding.reviewEditText.setText(review?.review.orEmpty())
+                binding.reviewEditText.setText(review.review.orEmpty())
             }
         }.start()
 
@@ -46,7 +46,7 @@ class DetailActivity : AppCompatActivity() {
             Thread {
                 db.reviewDao().saveReview(
                     Review(
-                        bookModel?.id?.toInt() ?: 0,
+                        bookModel?.id.toString(),
                         binding.reviewEditText.text.toString()
                     )
                 )

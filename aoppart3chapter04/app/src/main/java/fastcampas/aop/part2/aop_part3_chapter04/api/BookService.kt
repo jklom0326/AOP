@@ -4,19 +4,15 @@ import fastcampas.aop.part2.aop_part3_chapter04.model.BestSellerDTO
 import fastcampas.aop.part2.aop_part3_chapter04.model.SearchBookDTO
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface BookService {
 
-    @GET("/api/search.api?output=json")
+    @GET("v1/search/book.json")
     fun getBookByName(
-        @Query("key") apiKey: String,
+        @Header("X-Naver-Client-Id") Id: String,
+        @Header("X-Naver-Client-Secret") secretKey: String,
         @Query("query") keyword: String
     ): Call<SearchBookDTO>
-
-    @GET("/api/bestSeller.api?output=json&categoryId=100")
-    fun getBestSellerBooks(
-        @Query("key") apuKey: String,
-
-    ): Call<BestSellerDTO>
 }

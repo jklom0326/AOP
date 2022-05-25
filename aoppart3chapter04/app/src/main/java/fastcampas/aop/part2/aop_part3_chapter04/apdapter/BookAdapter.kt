@@ -57,5 +57,4 @@ class BookAdapter(private val itemClickedListener: (Book) -> Unit) : ListAdapter
 
         }
     }
-
 }
