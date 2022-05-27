@@ -4,4 +4,6 @@
     <string name="chatList">채팅</string>
     <string name="myPage">나의 정보</string>
     <string name="trade">중고 거래</string>
+    <string name="regit_item">물건 등록</string>
+    <string name="regit">등록하기</string>
 </resources>
