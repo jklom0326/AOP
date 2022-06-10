@@ -2,7 +2,6 @@ package com.aoppart3chapter05
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -16,6 +15,7 @@ import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        finish()
+                        handleSuccessLogin()
                     } else {
                         Toast.makeText(
                             this,
@@ -74,7 +74,8 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "회원가입에 성공했습니다. 로그인버튼을 눌러 로그인해주세요.", Toast.LENGTH_SHORT)
                             .show()
                     } else {
-                        Toast.makeText(this, "이미 가입한 이메일이거나, 회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "이미 가입한 이메일이거나, 회원가입에 실패했습니다.", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         }
@@ -98,35 +99,56 @@ class LoginActivity : AppCompatActivity() {
             signUpButton.isEnabled = enable
         }
     }
+
     private fun initFacebookLoginButton() {
         val facebookLoginButton = findViewById<LoginButton>(R.id.facebookloginbutton)
 
         facebookLoginButton.setPermissions("email", "public_profile")
-        facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
-            override fun onSuccess(result: LoginResult) {
-                // 로그인이 성공적
-                val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener(this@LoginActivity) { task ->
-                        if (task.isSuccessful) {
-                            finish()
-                        } else {
-                            Toast.makeText(this@LoginActivity, "페이스북 로그인이 실패했습니다.", Toast.LENGTH_SHORT).show()
+        facebookLoginButton.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    // 로그인이 성공적
+                    val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
+                    auth.signInWithCredential(credential)
+                        .addOnCompleteListener(this@LoginActivity) { task ->
+                            if (task.isSuccessful) {
+                                handleSuccessLogin()
+                            } else {
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    "페이스북 로그인이 실패했습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
-                    }
-            }
+                }
 
-            override fun onCancel() {}
+                override fun onCancel() {}
 
-            override fun onError(error: FacebookException?) {
-                Toast.makeText(this@LoginActivity, "페이스북 로그인이 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
+                override fun onError(error: FacebookException?) {
+                    Toast.makeText(this@LoginActivity, "페이스북 로그인이 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-        })
+            })
     }
 
     private fun getInputEmail() = findViewById<EditText>(R.id.emailEditText).text.toString()
     private fun getInputPassword() = findViewById<EditText>(R.id.passwordEditText).text.toString()
+
+    private fun handleSuccessLogin() {
+        if (auth.currentUser == null) {
+            Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val userId = auth.currentUser?.uid.orEmpty()
+        val currentUserDB = Firebase.database.reference.child("Users").child(userId)
+        val user = mutableMapOf<String, Any>()
+        user["userId"] = userId
+        currentUserDB.updateChildren(user)
+        finish()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
