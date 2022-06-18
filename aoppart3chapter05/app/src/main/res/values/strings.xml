@@ -5,4 +5,5 @@
     <string name="facebook_client_token">2acc2cc54a70509322994fce1b132da7</string>
 
     <string name="app_name">aoppart3chapter05</string>
+    <string name="write_name">이름을 입력해주세요</string>
 </resources>
