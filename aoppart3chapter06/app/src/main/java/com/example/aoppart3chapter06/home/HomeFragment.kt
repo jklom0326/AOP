@@ -22,7 +22,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             add(ArticleModel("0", "aaaa", 10000, "56000원",""))
             add(ArticleModel("0", "bbb", 20000, "7800원",""))
         })
-//      fragment article  추가
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
     }
