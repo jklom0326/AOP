@@ -14,18 +14,18 @@ class ArticleAdapter : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diff
 
     inner class ViewHolder(private val binding: ItemArticleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(articledModel: ArticleModel) {
+        fun bind(articleModel: ArticleModel) {
 
             val format = SimpleDateFormat("MM월 dd일")
-            val date = Date(articledModel.createdAt)
+            val date = Date(articleModel.createdAt)
 
-            binding.titleTextView.text = articledModel.title
+            binding.titleTextView.text = articleModel.title
             binding.dateTextView.text = format.format(date).toString()
-            binding.priceTextView.text = articledModel.price
+            binding.priceTextView.text = articleModel.price
 
-            if (articledModel.imageUrl.isNotEmpty()) {
+            if (articleModel.imageUrl.isNotEmpty()) {
                 Glide.with(binding.thumbnailImageView)
-                    .load(articledModel.imageUrl)
+                    .load(articleModel.imageUrl)
                     .into(binding.thumbnailImageView)
             }
         }
