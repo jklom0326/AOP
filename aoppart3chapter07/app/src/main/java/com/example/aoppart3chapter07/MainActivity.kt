@@ -1,4 +1,4 @@
-package com.example.aoppart03chapter07
+package com.example.aoppart3chapter07
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
