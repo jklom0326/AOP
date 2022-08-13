@@ -5,7 +5,9 @@
       <map>
         <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/drawable/top_radius_white_background.xml" value="0.1435" />
         <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/layout/activity_main.xml" value="0.3489583333333333" />
-        <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/layout/bottom_sheet.xml" value="0.3625" />
+        <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/layout/bottom_sheet.xml" value="0.33" />
+        <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/layout/item_house.xml" value="0.23369565217391305" />
+        <entry key="..\:/aop/aoppart3chapter07/app/src/main/res/layout/item_house_detail_for_viewpager.xml" value="0.3614583333333333" />
       </map>
     </option>
   </component>
