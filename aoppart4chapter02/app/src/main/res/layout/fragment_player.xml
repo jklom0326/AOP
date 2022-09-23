@@ -87,7 +87,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp"
         android:translationY="50dp"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="5dp"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="@id/topBackgroundView"
         app:layout_constraintDimensionRatio="H, 1:1"
@@ -111,17 +111,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-    <view
-        class="androidx.appcompat.app.AlertController$RecycleListView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/playerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
-
-    </view>
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
