@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.aoppart4chapter02.databinding.FragmentPlayerBinding
 import com.example.aoppart4chapter02.service.MusicDto
 import com.example.aoppart4chapter02.service.MusicService
@@ -74,9 +75,21 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     super.onMediaItemTransition(mediaItem, reason)
                     val newIndex = mediaItem?.mediaId ?: return
                     model.currentPosition = newIndex.toInt()
+                    updatePlayerView(model.currentMusicModel())
                     playListAdapter.submitList(model.getAdapterModels())
                 }
             })
+        }
+    }
+
+    private fun updatePlayerView(currentMusicModel: MusicModel?) {
+        currentMusicModel ?: return
+        binding?.let { binding ->
+            binding.trackTextView.text = currentMusicModel.track
+            binding.artistTextView.text = currentMusicModel.artist
+            Glide.with(binding.coverImageView.context)
+                .load(currentMusicModel.coverUrl)
+                .into(binding.coverImageView)
         }
     }
 
