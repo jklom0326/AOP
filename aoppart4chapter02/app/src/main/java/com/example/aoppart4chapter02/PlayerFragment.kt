@@ -3,6 +3,7 @@ package com.example.aoppart4chapter02
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +16,17 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
     private var model: PlayerModel = PlayerModel()
     private var binding: FragmentPlayerBinding? = null
     private var player: SimpleExoPlayer? = null
     private lateinit var playListAdapter: PlayListAdapter
+
+    private val updateSeekRunnable = Runnable {
+        updateSeek()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,9 +36,32 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         initPlayView(fragmentPlayerBinding)
         initPlayListButton(fragmentPlayerBinding)
         initPlayControlButtons(fragmentPlayerBinding)
+        initSeekBar(fragmentPlayerBinding)
         initRecyclerView(fragmentPlayerBinding)
 
         getVideoListFromServer()
+    }
+
+    private fun initSeekBar(fragmentPlayerBinding: FragmentPlayerBinding) {
+        fragmentPlayerBinding.playerSeekBar.setOnClickListener {
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    player?.seekTo((seekBar.progress * 1000).toLong())
+                }
+
+            }
+        }
+        fragmentPlayerBinding.playListSeekBar.setOnClickListener {
+            false
+        }
     }
 
     private fun initPlayControlButtons(fragmentPlayerBinding: FragmentPlayerBinding) {
@@ -78,7 +107,46 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     updatePlayerView(model.currentMusicModel())
                     playListAdapter.submitList(model.getAdapterModels())
                 }
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    updateSeek()
+                }
             })
+        }
+    }
+
+    private fun updateSeek() {
+        val player = this.player ?: return
+        val duration = if (player.duration >= 0) player.duration else 0
+        val position = player.currentPosition
+
+        updateSeekUi(duration, position)
+
+        val state = player.playbackState
+        view?.removeCallbacks(updateSeekRunnable)
+        if (state != Player.STATE_IDLE && state != Player.STATE_ENDED) {
+            view?.postDelayed(updateSeekRunnable, 1000)
+        }
+    }
+
+    private fun updateSeekUi(duration: Long, position: Long) {
+        binding?.let { binding ->
+            binding.playListSeekBar.max = (duration / 1000).toInt()
+            binding.playListSeekBar.progress = (position / 1000).toInt()
+            binding.playerSeekBar.max = (duration / 1000).toInt()
+            binding.playerSeekBar.progress = (position / 1000).toInt()
+
+            binding.playTimeTextView.text = String.format(
+                "%02d:%02d",
+                TimeUnit.MINUTES.convert(position, TimeUnit.MILLISECONDS),
+                (position / 1000) % 60
+            )
+            binding.totalTimeTextView.text = String.format(
+                "%02d:%02d",
+                TimeUnit.MINUTES.convert(position, TimeUnit.MILLISECONDS),
+                (duration / 1000) % 60
+            )
         }
     }
 
@@ -157,6 +225,19 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         model.updateCurrentPosition(musicModel)
         player?.seekTo(model.currentPosition, 0)
         player?.play()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player?.pause()
+        view?.removeCallbacks(updateSeekRunnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+        player?.release()
+        view?.removeCallbacks(updateSeekRunnable)
     }
 
     companion object {
