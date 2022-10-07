@@ -16,6 +16,7 @@
         tools:text="제목" />
 
     <TextView
+        android:id="@+id/subtextTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -26,6 +27,7 @@
         tools:text="부제목" />
 
     <View
+        android:id="@+id/dividerView"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/black"
