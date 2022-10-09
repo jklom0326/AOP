@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aoppart4chapter03.databinding.ViewholderSearchResultItemBinding
 
-class SearchRecyclerAdapter(private val searchResultClickListener: (Any) -> Unit) :
+class SearchRecyclerAdapter :
     RecyclerView.Adapter<SearchRecyclerAdapter.SearchResultItemViewHolder>() {
 
     private var searchResultList: List<Any> = listOf()
+    private val searchResultClickListener: List<Any> = listOf()
 
     class SearchResultItemViewHolder(
         val binding: ViewholderSearchResultItemBinding,
@@ -29,7 +30,11 @@ class SearchRecyclerAdapter(private val searchResultClickListener: (Any) -> Unit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultItemViewHolder {
-        val view = ViewholderSearchResultItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ViewholderSearchResultItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return SearchResultItemViewHolder(view, searchResultClickListener)
     }
 

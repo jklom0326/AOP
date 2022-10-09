@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
         initAdapter()
         initViews()
+        initData()
+        setData()
     }
 
     private fun initAdapter(){
@@ -31,4 +33,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    private fun initData() {
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun setData() {
+
+    }
 }
