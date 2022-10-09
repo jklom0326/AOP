@@ -23,9 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter(){
-        adapter = SearchRecyclerAdapter{
-            Toast.makeText(this, "아이템 클릭", Toast.LENGTH_SHORT).show()
-        }
+        adapter = SearchRecyclerAdapter()
     }
 
     private fun initViews() = with(binding) {

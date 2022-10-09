@@ -10,7 +10,7 @@ class SearchRecyclerAdapter :
     RecyclerView.Adapter<SearchRecyclerAdapter.SearchResultItemViewHolder>() {
 
     private var searchResultList: List<Any> = listOf()
-    private val searchResultClickListener: List<Any> = listOf()
+    private lateinit var searchResultClickListener: (Any) -> Unit
 
     class SearchResultItemViewHolder(
         val binding: ViewholderSearchResultItemBinding,
@@ -44,4 +44,9 @@ class SearchRecyclerAdapter :
     }
 
     override fun getItemCount(): Int = 10
+
+    fun setSearchResultListener(searchResultList: List<Any>, searchResultClickListener: (Any) -> Unit) {
+        this.searchResultList = searchResultList
+        this.searchResultClickListener = searchResultClickListener
+    }
 }
